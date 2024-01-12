@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: fastchat:latest
     ports:
       - "8501:8501"
     volumes:
@@ -18,3 +17,19 @@ services:
       - 0.0.0.0
       - --port
       - '8501'
+  chat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+     - ${DOCKER_VOLUME_DIRECTORY:-../cam/fastapi}:/app
+    working_dir: /app
+    entrypoint: 
+      - uvicorn
+      - broadcast:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - '8000'
