@@ -14,7 +14,7 @@ st.session_state.setdefault('tokens', {'pts': 0, 'cts': 0, 'tts': 0})
 
 with st.sidebar:
     with st.container():
-        st.markdown('''**Tokens**:  
+        st.markdown('''**Tokens**:
 |   promts | completions | totals |
 |    ----  |     ----    | ----   |
 |    {pts} |     {cts}   |  {tts} |

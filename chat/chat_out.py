@@ -1,7 +1,6 @@
 import streamlit as st
 from streamlit_chatbox import ChatBox
 from zhipuai import ZhipuAI
-import os
 
 
 st.set_page_config('AI聊天室', '🤖')
@@ -19,7 +18,7 @@ st.session_state.setdefault('tokens', {'pts': 0, 'cts': 0, 'tts': 0})
 
 with st.sidebar:
     with st.container():
-        st.markdown('''**Tokens**:  
+        st.markdown('''**Tokens**:
 |   promts | completions | totals |
 |    ----  |     ----    | ----   |
 |    {pts} |     {cts}   |  {tts} |
@@ -44,4 +43,3 @@ if prompt := st.chat_input("请输入您要问的问题"):
             st.session_state['tokens']['tts'] += chunk.usage.total_tokens
         chatbox.update_msg(text)
     chatbox.update_msg(text, streaming=False)
-        
