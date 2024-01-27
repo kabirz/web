@@ -1,9 +1,14 @@
 import streamlit as st
 from streamlit_chatbox import ChatBox, Image
 import zhipuai
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 st.set_page_config('AI聊天室', '🤖')
 
+if os.environ.get('ZHIPUAI_API_KEY'):
+    st.session_state['zhipu_key'] = os.environ.get('ZHIPUAI_API_KEY')
 history_len = 4
 if not st.session_state.get('zhipu_key'):
     zhipu_key = st.text_input("请输入智谱的api key")
