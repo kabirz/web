@@ -7,7 +7,7 @@ st.set_page_config('AI聊天室', '🤖')
 load_dotenv()
 
 chatbox = ChatBox(assistant_avatar='🤖', user_avatar='🏆')
-MODELS = ['智谱', '讯飞', '本地']
+MODELS = ['智谱', '讯飞', 'OpenAI','本地']
 with st.sidebar:
     model_name = st.radio('请选择大模型', MODELS, horizontal=True)
 if model_name == '智谱':
@@ -16,6 +16,9 @@ if model_name == '智谱':
 elif model_name == '讯飞':
     from chat_sk import SkChat
     chat = SkChat()
+elif model_name == 'OpenAI':
+    from chat_openai import OpenaiChat 
+    chat = OpenaiChat()
 elif model_name == '本地':
     from chat_local import LocalChat
     chat = LocalChat()
