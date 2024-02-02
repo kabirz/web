@@ -3,3 +3,4 @@ python-dotenv>=0.21.0
 zhipuai>=2.0.1
 websocket-client>=1.7.0
 openai>=1.10.0
+tiktoken>=0.5.2

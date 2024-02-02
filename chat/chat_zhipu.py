@@ -28,6 +28,7 @@ class ZhipuChat(Chat):
             self.have_tokens = False
 
     def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+        self.messages = messages
         if self.model_name == "绘画":
             chatbox.ai_say('正在绘画中...')
             try:
@@ -50,13 +51,13 @@ class ZhipuChat(Chat):
         if self.model_name == "绘画":
             chatbox.update_msg(self.out, streaming=False)
             return
-        text = ''
+        self.content = ''
         for chunk in self.res:
-            text += chunk.choices[0].delta.content
+            self.content += chunk.choices[0].delta.content
             if chunk.usage:
-                self.tokens['pts'] = chunk.usage.prompt_tokens
-                self.tokens['cts'] = chunk.usage.completion_tokens
-                self.tokens['tts'] = chunk.usage.total_tokens
-                chatbox.update_msg(text, streaming=False)
+                self.prompt_tokens = chunk.usage.prompt_tokens
+                self.completion_tokens = chunk.usage.completion_tokens
+                self.total_tokens = chunk.usage.total_tokens
+                chatbox.update_msg(self.content, streaming=False)
             else:
-                chatbox.update_msg(text)
+                chatbox.update_msg(self.content)

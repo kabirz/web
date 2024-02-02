@@ -24,6 +24,7 @@ class LocalChat(Chat):
             self.model_name = st.selectbox("选择模型", self.models)
 
     def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+        self.messages = messages
         data = {
             'model': self.model_name,
             'stream': True,
@@ -37,16 +38,16 @@ class LocalChat(Chat):
             st.stop()
 
     def response(self, chatbox: ChatBox):
-        text = ''
+        self.content = ''
         for chunk in self.res.iter_lines():
             if not chunk:
                 continue
             data = chunk.decode().split(':', 1)
             try:
                 data_json = json.loads(data[1])
-                text += data_json['choices'][0]['delta']['content']
-                chatbox.update_msg(text)
+                self.content += data_json['choices'][0]['delta']['content']
+                chatbox.update_msg(self.content)
             except KeyError:
                 pass
             except json.decoder.JSONDecodeError:
-                chatbox.update_msg(text, streaming=False)
+                chatbox.update_msg(self.content, streaming=False)

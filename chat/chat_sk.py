@@ -76,9 +76,9 @@ class SkChat(Chat):
             content = choices['text'][0]['content']
             if status == 2:
                 tokens = data['payload']['usage']['text']
-                self.tokens['pts'] = tokens['prompt_tokens']
-                self.tokens['cts'] = tokens['completion_tokens']
-                self.tokens['tts'] = tokens['total_tokens']
+                self.prompt_tokens = tokens['prompt_tokens']
+                self.completion_tokens = tokens['completion_tokens']
+                self.total_tokens = tokens['total_tokens']
             return status == 2, content
 
     def _gen_params(self):
@@ -96,6 +96,7 @@ class SkChat(Chat):
         return data
 
     def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+        self.messages = messages
         chatbox.ai_say('正在思考...')
         self.client = websocket.create_connection(st.session_state.get('sk_url'), sslopt={"cert_reqs": ssl.CERT_NONE})
         self.messages = messages
@@ -103,12 +104,12 @@ class SkChat(Chat):
 
     def response(self, chatbox: ChatBox):
         finish = False
-        text = ''
+        self.content = ''
         while not finish:
             output = self.client.recv()
             finish, data = self._message_handler(output)
-            text += data
-            chatbox.update_msg(text, streaming=not finish)
+            self.content += data
+            chatbox.update_msg(self.content, streaming=not finish)
 
     def __exit__(self):
         self.client.close()

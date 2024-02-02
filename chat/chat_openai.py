@@ -23,16 +23,17 @@ class OpenaiChat(Chat):
         self.have_tokens = False
 
     def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+        self.messages = messages
         chatbox.ai_say('正在思考...')
         self.res = self.client.chat.completions.create(
              model=self.model_name, messages=messages, stream=True
         )
 
     def response(self, chatbox: ChatBox):
-        text = ''
+        self.content = ''
         for chunk in self.res:
             if chunk.choices[0].delta.content:
-                text += chunk.choices[0].delta.content
-                chatbox.update_msg(text)
+                self.content += chunk.choices[0].delta.content
+                chatbox.update_msg(self.content)
             else:
-                chatbox.update_msg(text, streaming=False)
+                chatbox.update_msg(self.content, streaming=False)
