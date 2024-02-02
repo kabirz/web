@@ -24,10 +24,8 @@ class ZhipuChat(Chat):
         self.client = ZhipuAI()
         with st.sidebar:
             self.model_name = st.selectbox('请选择类别', self.MODELS)
-
-    @property
-    def model(self):
-        return f'zhipu_{self.model_name}'
+        if self.model_name == "绘画":
+            self.have_tokens = False
 
     def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
         if self.model_name == "绘画":

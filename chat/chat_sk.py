@@ -95,10 +95,6 @@ class SkChat(Chat):
         }
         return data
 
-    @property
-    def model(self):
-        return f'zhipu_{self.model_name}'
-
     def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
         chatbox.ai_say('正在思考...')
         self.client = websocket.create_connection(st.session_state.get('sk_url'), sslopt={"cert_reqs": ssl.CERT_NONE})

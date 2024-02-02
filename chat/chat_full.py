@@ -7,16 +7,18 @@ st.set_page_config('AI聊天室', '🤖')
 load_dotenv()
 
 chatbox = ChatBox(assistant_avatar='🤖', user_avatar='🏆')
+MODELS = ['智谱', '讯飞', '本地']
 with st.sidebar:
-    model_name = st.radio('请选择大模型', ['智谱', '讯飞星火'], horizontal=True)
+    model_name = st.radio('请选择大模型', MODELS, horizontal=True)
 if model_name == '智谱':
     from chat_zhipu import ZhipuChat
     chat = ZhipuChat()
-elif model_name == '讯飞星火':
+elif model_name == '讯飞':
     from chat_sk import SkChat
     chat = SkChat()
-else:
-    st.rerun()
+elif model_name == '本地':
+    from chat_local import LocalChat
+    chat = LocalChat()
 
 with st.sidebar:
     history_len = st.number_input("历史对话轮数：", 0, 20, 4)
