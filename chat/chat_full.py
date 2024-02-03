@@ -24,6 +24,7 @@ elif model_name == '本地':
     chat = LocalChat()
 
 with st.sidebar:
+    temperature = st.slider("Temperature：", 0.0, 1.0, 0.5, 0.05)
     history_len = st.number_input("历史对话轮数：", 0, 20, 4)
     token = st.empty()
 chat.show_tokens(token)
@@ -38,7 +39,7 @@ if prompt := st.chat_input("请输入您要问的问题"):
     chatbox.user_say(prompt)
     for his in chatbox.history[-history_len*2:]:
         messages.append({'role': his['role'], 'content': his['elements'][0].content})
-    chat.request(messages=messages, chatbox=chatbox)
+    chat.request(temperature, messages=messages, chatbox=chatbox)
     chat.response(chatbox)
     chat.show_tokens(token)
 

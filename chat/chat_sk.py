@@ -81,13 +81,13 @@ class SkChat(Chat):
                 self.total_tokens = tokens['total_tokens']
             return status == 2, content
 
-    def _gen_params(self):
+    def _gen_params(self, temperature):
         data = {
             "header": {"app_id": self.appid, "uid": "1234"},
             "parameter": {
                 "chat": {
                     "domain": self.MODELS[self.model_name],
-                    "temperature": 0.5,
+                    "temperature": temperature,
                     "max_tokens": 2048
                 }
             },
@@ -95,12 +95,12 @@ class SkChat(Chat):
         }
         return data
 
-    def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+    def request(self, temperature: float, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
         self.messages = messages
         chatbox.ai_say('正在思考...')
         self.client = websocket.create_connection(st.session_state.get('sk_url'), sslopt={"cert_reqs": ssl.CERT_NONE})
         self.messages = messages
-        self.client.send(json.dumps(self._gen_params()))
+        self.client.send(json.dumps(self._gen_params(temperature)))
 
     def response(self, chatbox: ChatBox):
         finish = False

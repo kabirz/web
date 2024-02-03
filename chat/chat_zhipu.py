@@ -27,7 +27,7 @@ class ZhipuChat(Chat):
         if self.model_name == "绘画":
             self.have_tokens = False
 
-    def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+    def request(self, temperature: float, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
         self.messages = messages
         if self.model_name == "绘画":
             chatbox.ai_say('正在绘画中...')
@@ -44,7 +44,7 @@ class ZhipuChat(Chat):
         else:
             chatbox.ai_say('正在思考...')
             self.res = self.client.chat.completions.create(
-             model=self.model_name, messages=messages, stream=True
+             model=self.model_name, messages=messages, stream=True, temperature=temperature
             )
 
     def response(self, chatbox: ChatBox):

@@ -22,11 +22,11 @@ class OpenaiChat(Chat):
         self.model_name = 'gpt-3.5-turbo'
         self.have_tokens = False
 
-    def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+    def request(self, temperature: float, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
         self.messages = messages
         chatbox.ai_say('正在思考...')
         self.res = self.client.chat.completions.create(
-             model=self.model_name, messages=messages, stream=True
+             model=self.model_name, messages=messages, stream=True, temperature=temperature
         )
 
     def response(self, chatbox: ChatBox):

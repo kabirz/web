@@ -25,7 +25,7 @@ class Chat(ABC):
         self.s_tokens = st.session_state[f'{self.name}_tokens']
 
     @abstractmethod
-    def request(self, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
+    def request(self, temperature: float, messages: List[Dict], stream=True, chatbox: ChatBox = ChatBox()):
         ...
 
     @abstractmethod
