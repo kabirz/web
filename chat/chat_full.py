@@ -3,10 +3,12 @@ from streamlit_chatbox import ChatBox
 from dotenv import load_dotenv
 from datetime import datetime
 
-st.set_page_config('AI聊天室', '🤖')
+AI = 'img/AI.jpg'
+USER = 'img/USER.png'
+st.set_page_config('ChatBot Online', AI)
 load_dotenv()
 
-chatbox = ChatBox(assistant_avatar='🤖', user_avatar='🏆')
+chatbox = ChatBox(assistant_avatar=AI, user_avatar=USER)
 MODELS = ['智谱', '讯飞', 'OpenAI']
 with st.sidebar:
     model_name = st.radio('请选择大模型', MODELS, horizontal=True)
@@ -43,7 +45,7 @@ if prompt := st.chat_input("请输入您要问的问题"):
 with st.sidebar:
     export_btn = st.download_button(
         '导出聊天记录',
-        ''.join(chatbox.export2md(user_bg_color='#3A2523', ai_bg_color='#3A3543')),
+        ''.join(chatbox.export2md(user_bg_color='#EFEFEF', ai_bg_color='#CFCFCF')),
         file_name=f'{chat.model}_{datetime.now():%Y-%m-%d %H.%M}_对话记录.md',
         mime='text/markdown',
         use_container_width=True,
