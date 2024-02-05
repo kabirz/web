@@ -2,12 +2,13 @@ import streamlit as st
 from streamlit_chatbox import ChatBox
 from dotenv import load_dotenv
 from datetime import datetime
+import os
 
 PATH = __file__.rsplit('/', 1)[0]
 AI = f'{PATH}/img/AI.jpg'
 USER = f'{PATH}/img/USER.png'
 st.set_page_config('ChatBot Online', AI)
-load_dotenv()
+load_dotenv(os.path.expanduser('~/.env'))
 
 chatbox = ChatBox(assistant_avatar=AI, user_avatar=USER)
 MODELS = ['智谱', '讯飞', 'OpenAI']
